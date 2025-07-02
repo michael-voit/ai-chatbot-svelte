@@ -9,12 +9,12 @@ interface ChatModel {
 export const chatModels: Array<ChatModel> = [
 	{
 		id: 'chat-model',
-		name: 'Chat model',
-		description: 'Primary model for all-purpose chat'
+		name: 'Mistral Chat',
+		description: 'Balanced performance for general conversations'
 	},
 	{
 		id: 'chat-model-reasoning',
-		name: 'Reasoning model',
-		description: 'Uses advanced reasoning'
+		name: 'Mistral Reasoning',
+		description: 'Advanced reasoning with step-by-step thinking'
 	}
 ];

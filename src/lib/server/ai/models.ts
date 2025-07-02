@@ -1,22 +1,17 @@
-import { createXai } from '@ai-sdk/xai';
-import { createGroq } from '@ai-sdk/groq';
+import { createMistral } from '@ai-sdk/mistral';
 import { customProvider, extractReasoningMiddleware, wrapLanguageModel } from 'ai';
-import { XAI_API_KEY, GROQ_API_KEY } from '$env/static/private';
+import { MISTRAL_API_KEY } from '$env/static/private';
 
-const xai = createXai({ apiKey: XAI_API_KEY });
-const groq = createGroq({ apiKey: GROQ_API_KEY });
+const mistral = createMistral({ apiKey: MISTRAL_API_KEY });
 
 export const myProvider = customProvider({
 	languageModels: {
-		'chat-model': xai('grok-2-1212'),
+		'chat-model': mistral('mistral-medium-latest'),
 		'chat-model-reasoning': wrapLanguageModel({
-			model: groq('deepseek-r1-distill-llama-70b'),
+			model: mistral('magistral-medium-latest'),
 			middleware: extractReasoningMiddleware({ tagName: 'think' })
 		}),
-		'title-model': xai('grok-2-1212'),
-		'artifact-model': xai('grok-2-1212')
-	},
-	imageModels: {
-		'small-model': xai.image('grok-2-image')
+		'title-model': mistral('mistral-medium-latest'),
+		'artifact-model': mistral('mistral-medium-latest')
 	}
 });

@@ -22,6 +22,7 @@ export async function POST({ request, locals: { user }, cookies }) {
 
 	if (!user && !allowAnonymousChats) {
 		error(401, 'Unauthorized');
+		error(401, 'You have to login to chat.');
 	}
 
 	if (!selectedChatModel) {

@@ -21,9 +21,8 @@
 		"db:up": "drizzle-kit up"
 	},
 	"devDependencies": {
-		"@ai-sdk/groq": "^1.2.0",
+		"@ai-sdk/mistral": "^1.2.8",
 		"@ai-sdk/svelte": "^2.1.0",
-		"@ai-sdk/xai": "^1.2.1",
 		"@eslint/compat": "^1.2.5",
 		"@eslint/js": "^9.18.0",
 		"@internationalized/date": "^3.5.6",
