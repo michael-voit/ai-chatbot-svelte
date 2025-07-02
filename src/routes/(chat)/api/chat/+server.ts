@@ -21,7 +21,6 @@ export async function POST({ request, locals: { user }, cookies }) {
 	const selectedChatModel = cookies.get('selected-model');
 
 	if (!user && !allowAnonymousChats) {
-		error(401, 'Unauthorized');
 		error(401, 'You have to login to chat.');
 	}
 
