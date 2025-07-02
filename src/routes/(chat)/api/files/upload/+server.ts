@@ -1,7 +1,8 @@
 import { error } from '@sveltejs/kit';
 import { z } from 'zod';
-import { put } from '@vercel/blob';
-import { BLOB_READ_WRITE_TOKEN } from '$env/static/private';
+import { PutObjectCommand } from '@aws-sdk/client-s3';
+import { s3Client } from '$lib/server/storage/s3-client.js';
+import { S3_BUCKET, S3_PUBLIC_URL } from '$env/static/private';
 
 const FileSchema = z.object({
 	file: z
@@ -45,10 +46,28 @@ export async function POST({ request, locals: { user } }) {
 		const fileBuffer = await file.arrayBuffer();
 
 		try {
-			const data = await put(`${filename}`, fileBuffer, {
-				access: 'public',
-				token: BLOB_READ_WRITE_TOKEN
+			// Generate unique filename to avoid conflicts
+			const timestamp = Date.now();
+			const uniqueFilename = `${timestamp}-${filename}`;
+
+			const command = new PutObjectCommand({
+				Bucket: S3_BUCKET,
+				Key: uniqueFilename,
+				Body: new Uint8Array(fileBuffer),
+				ContentType: file.type,
+				ACL: 'public-read'
 			});
+
+			await s3Client.send(command);
+
+			// Construct the public URL
+			const publicUrl = `https://${S3_PUBLIC_URL}/${uniqueFilename}`;
+
+			const data = {
+				url: publicUrl,
+				pathname: uniqueFilename,
+				contentType: file.type
+			};
 
 			return Response.json(data);
 		} catch (e) {
